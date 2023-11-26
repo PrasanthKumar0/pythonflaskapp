@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         SSH_KEY = '/home/ubuntu/564832.pem'
-        EC2_INSTANCE = '3.108.236.212'
+        EC2_INSTANCE = '13.233.163.83'
         EC2_USER = 'ubuntu'
         DEPLOY_PATH = '/home/ubuntu/pythonflaskapp'
         GIT_REPO = 'https://github.com/PrasanthKumar0/pythonflaskapp.git'
