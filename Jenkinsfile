@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         SSH_KEY = '/home/ubuntu/564832.pem'
-        EC2_INSTANCE = '13.233.163.83'
+        EC2_INSTANCE = '3.108.236.212'
         EC2_USER = 'ubuntu'
         DEPLOY_PATH = '/home/ubuntu/pythonflaskapp'
         GIT_REPO = 'https://github.com/PrasanthKumar0/pythonflaskapp.git'
@@ -39,12 +39,8 @@ pipeline {
                     // Update SSH known hosts
                     sh "ssh-keyscan -H ${EC2_INSTANCE} >> ~/.ssh/known_hosts"
 
-                    // Adjust permissions
-                    sh "sudo chown ubuntu:ubuntu ${SSH_KEY}"
-                    sh "sudo chmod 400 ${SSH_KEY}"
-
                     // SCP files to EC2 instance
-                    sh "scp -i ${SSH_KEY} -r Jenkinsfile requirements.txt venv ubuntu@${EC2_INSTANCE}:${DEPLOY_PATH}"
+                    sh "scp -i ${SSH_KEY} -r Jenkinsfile requirements.txt venv ${EC2_USER}@${EC2_INSTANCE}:${DEPLOY_PATH}"
 
                     // SSH into EC2, activate virtual environment, and start the app
                     sh "ssh -i ${SSH_KEY} ${EC2_USER}@${EC2_INSTANCE} 'cd ${DEPLOY_PATH} && source venv/bin/activate && python your_app.py'"
