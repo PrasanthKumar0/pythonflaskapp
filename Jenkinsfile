@@ -10,22 +10,13 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
+        stage('SSH into EC2') {
             steps {
                 script {
-                    git branch: 'main', url: GIT_REPO
-                }
-            }
-        }
+                    sh "sudo chown ubuntu:ubuntu ${SSH_KEY}"
+                    sh "sudo chmod 400 ${SSH_KEY}"
 
-        stage('Install Dependencies') {
-            steps {
-                script {
-                    sh 'sudo apt-get update'
-                    sh 'sudo apt-get install -y python3-venv'
-
-                    sh 'python3 -m venv venv'
-                    sh 'bash -c "source venv/bin/activate && pip install -r ./requirements.txt"'
+                    sh "ssh -i ${SSH_KEY} ${EC2_USER}@${EC2_INSTANCE} 'cd ${DEPLOY_PATH} && source venv/bin/activate && your_additional_command_here'"
                 }
             }
         }
@@ -39,17 +30,6 @@ pipeline {
                     sh "scp -i ${SSH_KEY} -r * ${EC2_USER}@${EC2_INSTANCE}:${DEPLOY_PATH}"
 
                     sh "ssh -i ${SSH_KEY} ${EC2_USER}@${EC2_INSTANCE} 'cd ${DEPLOY_PATH} && source venv/bin/activate && python your_app.py'"
-                }
-            }
-        }
-
-        stage('SSH into EC2') {
-            steps {
-                script {
-                    sh "sudo chown ubuntu:ubuntu ${SSH_KEY}"
-                    sh "sudo chmod 400 ${SSH_KEY}"
-
-                    sh "ssh -i ${SSH_KEY} ${EC2_USER}@${EC2_INSTANCE} 'cd ${DEPLOY_PATH} && source venv/bin/activate && your_additional_command_here'"
                 }
             }
         }
