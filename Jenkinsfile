@@ -21,4 +21,13 @@ pipeline {
             }
         }
 
-        stage('Run Docker Cont
+        stage('Run Docker Container') {
+            steps {
+                script {
+                    // Your Docker run command with port 3001
+                    sh 'docker container run -d -p 3001:3000 prasanthk8/hey-python-flask:0.0.1.RELEASE'
+                }
+            }
+        }
+    }
+}
