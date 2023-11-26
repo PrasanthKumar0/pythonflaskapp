@@ -33,6 +33,9 @@ pipeline {
         stage('Deploy to EC2') {
             steps {
                 script {
+                    // Create SSH directory if it doesn't exist
+                    sh 'mkdir -p ~/.ssh'
+
                     // Update SSH known hosts
                     sh "ssh-keyscan -H ${EC2_INSTANCE} >> ~/.ssh/known_hosts"
 
