@@ -19,6 +19,10 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
+                    // Install python3-venv package
+                    sh 'sudo apt-get update && sudo apt-get install -y python3-venv'
+
+                    // Create virtual environment and install dependencies
                     sh 'python3 -m venv venv'
                     sh 'source venv/bin/activate && pip install -r requirements.txt'
                 }
