@@ -23,8 +23,11 @@ pipeline {
             sh 'sudo -S apt-get update'
             sh 'sudo -S apt-get install -y python3-venv'
 
-            // Create virtual environment and install dependencies
-            sh 'bash -c "source venv/bin/activate && pip install -r requirements.txt"'
+            // Create virtual environment
+            sh 'python3 -m venv venv'
+
+            // Activate virtual environment and install dependencies
+            sh 'bash -c "source venv/bin/activate && pip install -r ./requirements.txt"'
         }
     }
 }
