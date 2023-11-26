@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         SSH_KEY = '/home/ubuntu/564832.pem'
-        EC2_INSTANCE = 'ec2-13-233-163-83.ap-south-1.compute.amazonaws.com'
+        EC2_INSTANCE = '3.108.236.212.ap-south-1.compute.amazonaws.com'
         EC2_USER = 'ubuntu'
         DEPLOY_PATH = '/home/ubuntu/pythonflaskapp'
         GIT_REPO = 'https://github.com/PrasanthKumar0/pythonflaskapp.git'
@@ -42,16 +42,3 @@ pipeline {
                 }
             }
         }
-
-        stage('SSH into EC2') {
-            steps {
-                script {
-                    sh "sudo chown ubuntu:ubuntu ${SSH_KEY}"
-                    sh "sudo chmod 400 ${SSH_KEY}"
-
-                    sh "ssh -i ${SSH_KEY} ${EC2_USER}@${EC2_INSTANCE} 'cd ${DEPLOY_PATH} && source venv/bin/activate && your_additional_command_here'"
-                }
-            }
-        }
-    }
-}
