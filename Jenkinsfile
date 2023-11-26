@@ -21,13 +21,4 @@ pipeline {
             }
         }
 
-        stage('Run Docker Container') {
-            steps {
-                script {
-                    // Your Docker run command with port 3000
-                    sh 'docker container run -d -p 3000:3000 prasanthk8/hey-python-flask:0.0.1.RELEASE'
-                }
-            }
-        }
-    }
-}
+        stage('Run Docker Cont
