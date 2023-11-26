@@ -33,11 +33,17 @@ pipeline {
         stage('Deploy to EC2') {
             steps {
                 script {
+                    // Update SSH known hosts
+                    sh "ssh-keyscan -H ${EC2_INSTANCE} >> ~/.ssh/known_hosts"
+
+                    // Adjust permissions
                     sh "sudo chown ubuntu:ubuntu ${SSH_KEY}"
                     sh "sudo chmod 400 ${SSH_KEY}"
 
-                    sh "scp -i ${SSH_KEY} -r * ${EC2_USER}@${EC2_INSTANCE}:${DEPLOY_PATH}"
+                    // SCP files to EC2 instance
+                    sh "scp -i ${SSH_KEY} -r Jenkinsfile requirements.txt venv ubuntu@${EC2_INSTANCE}:${DEPLOY_PATH}"
 
+                    // SSH into EC2, activate virtual environment, and start the app
                     sh "ssh -i ${SSH_KEY} ${EC2_USER}@${EC2_INSTANCE} 'cd ${DEPLOY_PATH} && source venv/bin/activate && python your_app.py'"
                 }
             }
